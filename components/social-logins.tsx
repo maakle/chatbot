@@ -45,7 +45,7 @@ export function SocialLogins({
             className="mr-2"
             width={16}
             height={16}
-            src="/images/google-logo.webp"
+            src="/images/google-icon.webp"
             alt="Google"
           />
           {makeTitle('google')}
