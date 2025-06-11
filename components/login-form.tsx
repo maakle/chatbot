@@ -53,9 +53,7 @@ export function LoginForm({
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Log in via your Social Account or enter your email & password below
-          </CardDescription>
+          <CardDescription>Please sign in to continue</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>
