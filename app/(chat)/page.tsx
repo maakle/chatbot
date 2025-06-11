@@ -4,14 +4,14 @@ import { Chat } from '@/components/chat';
 import { DEFAULT_CHAT_MODEL } from '@/lib/ai/models';
 import { generateUUID } from '@/lib/utils';
 import { DataStreamHandler } from '@/components/data-stream-handler';
-import { createClient } from '@/lib/supabase/server';
+import { getUserOnServer } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
 export default async function Page() {
-  const supabase = await createClient();
+  const user = await getUserOnServer();
 
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
+  console.log('user', user);
+  if (!user) {
     redirect('/auth/login');
   }
 

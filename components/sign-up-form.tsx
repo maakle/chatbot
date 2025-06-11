@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { createUserAction } from '@/lib/actions/user';
+import { SocialLogins } from './social-logins';
 
 export function SignUpForm({
   className,
@@ -69,6 +70,10 @@ export function SignUpForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignUp}>
+            <SocialLogins isLoading={isLoading} type="sign-up" />
+
+            <div className="mt-4 text-center text-sm">or</div>
+
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -110,6 +115,7 @@ export function SignUpForm({
                 {isLoading ? 'Creating an account...' : 'Sign up'}
               </Button>
             </div>
+
             <div className="mt-4 text-center text-sm">
               Already have an account?{' '}
               <Link href="/auth/login" className="underline underline-offset-4">

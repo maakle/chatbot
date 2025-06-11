@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { SocialLogins } from './social-logins';
 
 export function LoginForm({
   className,
@@ -53,11 +54,15 @@ export function LoginForm({
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Log in via your Social Account or enter your email & password below
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>
+            <SocialLogins isLoading={isLoading} type="login" />
+
+            <div className="mt-4 text-center text-sm">or</div>
+
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -93,6 +98,7 @@ export function LoginForm({
                 {isLoading ? 'Logging in...' : 'Login'}
               </Button>
             </div>
+
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{' '}
               <Link
