@@ -9,8 +9,6 @@ import { redirect } from 'next/navigation';
 
 export default async function Page() {
   const user = await getUserOnServer();
-
-  console.log('user', user);
   if (!user) {
     redirect('/auth/login');
   }

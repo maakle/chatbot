@@ -171,8 +171,6 @@ export async function POST(request: Request) {
             }),
           },
           onFinish: async ({ response }) => {
-            console.log('AAAAAA');
-
             if (user?.id) {
               try {
                 const assistantId = getTrailingMessageId({
@@ -214,19 +212,13 @@ export async function POST(request: Request) {
           },
         });
 
-        console.log('BBBB');
-
         result.consumeStream();
-
-        console.log('CCCCC');
 
         result.mergeIntoDataStream(dataStream, {
           sendReasoning: true,
         });
       },
       onError: () => {
-        console.log('DDDDD');
-
         return 'Oops, an error occurred!';
       },
     });
@@ -238,11 +230,9 @@ export async function POST(request: Request) {
         await streamContext.resumableStream(streamId, () => stream),
       );
     } else {
-      console.log('FFFFF');
       return new Response(stream);
     }
   } catch (error) {
-    console.log('GGGGG');
     if (error instanceof ChatSDKError) {
       return error.toResponse();
     }
