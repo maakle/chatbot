@@ -1,13 +1,13 @@
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 
-import { auth } from '@/app/(auth)/auth';
 import { Chat } from '@/components/chat';
 import { getChatById, getMessagesByChatId } from '@/lib/db/queries';
 import { DataStreamHandler } from '@/components/data-stream-handler';
 import { DEFAULT_CHAT_MODEL } from '@/lib/ai/models';
 import type { DBMessage } from '@/lib/db/schema';
 import type { Attachment, UIMessage } from 'ai';
+import { getUserOnServer } from '@/lib/supabase/server';
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -18,18 +18,18 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     notFound();
   }
 
-  const session = await auth();
+  const user = await getUserOnServer();
 
-  if (!session) {
+  if (!user) {
     redirect('/api/auth/guest');
   }
 
   if (chat.visibility === 'private') {
-    if (!session.user) {
+    if (!user) {
       return notFound();
     }
 
-    if (session.user.id !== chat.userId) {
+    if (user.id !== chat.userId) {
       return notFound();
     }
   }
@@ -62,8 +62,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           initialMessages={convertToUIMessages(messagesFromDb)}
           initialChatModel={DEFAULT_CHAT_MODEL}
           initialVisibilityType={chat.visibility}
-          isReadonly={session?.user?.id !== chat.userId}
-          session={session}
+          isReadonly={user?.id !== chat.userId}
           autoResume={true}
         />
         <DataStreamHandler id={id} />
@@ -78,8 +77,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         initialMessages={convertToUIMessages(messagesFromDb)}
         initialChatModel={chatModelFromCookie.value}
         initialVisibilityType={chat.visibility}
-        isReadonly={session?.user?.id !== chat.userId}
-        session={session}
+        isReadonly={user?.id !== chat.userId}
         autoResume={true}
       />
       <DataStreamHandler id={id} />

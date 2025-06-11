@@ -1,15 +1,12 @@
 import type { Node } from 'prosemirror-model';
 import { Plugin, PluginKey } from 'prosemirror-state';
-import {
-  type Decoration,
-  DecorationSet,
-  type EditorView,
-} from 'prosemirror-view';
+import type { Decoration, EditorView } from 'prosemirror-view';
+import { DecorationSet } from 'prosemirror-view';
 import { createRoot } from 'react-dom/client';
 
 import { Suggestion as PreviewSuggestion } from '@/components/suggestion';
 import type { Suggestion } from '@/lib/db/schema';
-import { ArtifactKind } from '@/components/artifact';
+import type { ArtifactKind } from '@/components/artifact';
 
 export interface UISuggestion extends Suggestion {
   selectionStart: number;

@@ -1,6 +1,5 @@
 'use client';
 
-import type { User } from 'next-auth';
 import { useRouter } from 'next/navigation';
 
 import { PlusIcon } from '@/components/icons';
@@ -17,8 +16,9 @@ import {
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import type { User } from '@supabase/supabase-js';
 
-export function AppSidebar({ user }: { user: User | undefined }) {
+export function AppSidebar({ user }: { user: User | null }) {
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
 
@@ -61,7 +61,9 @@ export function AppSidebar({ user }: { user: User | undefined }) {
       <SidebarContent>
         <SidebarHistory user={user} />
       </SidebarContent>
-      <SidebarFooter>{user && <SidebarUserNav user={user} />}</SidebarFooter>
+      <SidebarFooter>
+        <SidebarUserNav user={user} />
+      </SidebarFooter>
     </Sidebar>
   );
 }
