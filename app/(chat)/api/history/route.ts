@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { getChatsByUserId } from '@/lib/db/queries';
 import { ChatSDKError } from '@/lib/errors';
-import { createClient, getUserOnServer } from '@/lib/supabase/server';
+import { getUserOnServer } from '@/lib/supabase/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;

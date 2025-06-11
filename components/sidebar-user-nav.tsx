@@ -21,7 +21,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
 
-export function SidebarUserNav({ user }: { user: User }) {
+export function SidebarUserNav({ user }: { user: User | null }) {
   const router = useRouter();
   const supabase = createClient();
   const { setTheme, resolvedTheme } = useTheme();
@@ -41,14 +41,14 @@ export function SidebarUserNav({ user }: { user: User }) {
               className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-10"
             >
               <Image
-                src={`https://avatar.vercel.sh/${user.email}`}
+                src={`https://avatar.vercel.sh/${user?.email ?? ''}`}
                 alt={'User Avatar'}
                 width={24}
                 height={24}
                 className="rounded-full"
               />
               <span data-testid="user-email" className="truncate">
-                {user.email}
+                {user?.email}
               </span>
               <ChevronUp className="ml-auto" />
             </SidebarMenuButton>
