@@ -1,5 +1,4 @@
 import { createBrowserClient } from '@supabase/ssr';
-import type { Provider, User } from '@supabase/supabase-js';
 
 let supabaseInstance: ReturnType<typeof createBrowserClient> | null = null;
 
@@ -15,4 +14,3 @@ export function createClient() {
 }
 
 export const supabase = createClient();
-
