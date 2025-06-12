@@ -1,15 +1,13 @@
 'use server';
 
-import { createUser } from '@/lib/db/queries';
+import { insertUser } from '@/lib/db/queries';
 
-export async function createUserAction(userId: string, email: string) {
+export async function insertUserAction(userId: string, email: string) {
   try {
-    await createUser(userId, email);
-    return { success: true };
+    const user = await insertUser(userId, email);
+    return user;
   } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to create user',
-    };
+    console.error(error);
+    throw error;
   }
 }

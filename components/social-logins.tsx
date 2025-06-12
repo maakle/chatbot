@@ -1,6 +1,6 @@
-import { createClient } from '@/lib/supabase/client';
 import { Button } from './ui/button';
 import Image from 'next/image';
+import { signInWithOauth } from '@/services/user';
 
 export function SocialLogins({
   type,
@@ -11,15 +11,7 @@ export function SocialLogins({
 }) {
   const handleSignInWithGoogle = async () => {
     try {
-      const supabase = createClient();
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-
-      if (error) throw error;
+      await signInWithOauth('google');
     } catch (error) {
       console.error('Error signing in with Google:', error);
     }

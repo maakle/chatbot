@@ -15,8 +15,8 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { createUserAction } from '@/lib/actions/user';
 import { SocialLogins } from './social-logins';
+import { createUserViaEmail } from '@/services/user';
 
 export function SignUpForm({
   className,
@@ -31,7 +31,6 @@ export function SignUpForm({
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
     setIsLoading(true);
     setError(null);
 
@@ -42,17 +41,7 @@ export function SignUpForm({
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}`,
-        },
-      });
-      if (error || !data.user) throw error;
-
-      await createUserAction(data.user.id, email);
-
+      await createUserViaEmail(email, password);
       router.push('/auth/sign-up-success');
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : 'An error occurred');

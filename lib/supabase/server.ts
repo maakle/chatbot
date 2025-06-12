@@ -43,3 +43,10 @@ export async function getUserOnServer(): Promise<User | null> {
 
   return data.user;
 }
+
+export async function exchangeCodeForSession(code: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
+  return { data, error };
+}

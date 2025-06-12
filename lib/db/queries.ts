@@ -47,11 +47,17 @@ export async function getUser(email: string): Promise<Array<User>> {
   }
 }
 
-export async function createUser(id: string, email: string) {
+export async function insertUser(id: string, email: string) {
   try {
-    return await db.insert(user).values({ id, email });
+    return await db
+      .insert(user)
+      .values({ id, email })
+      .onConflictDoUpdate({
+        target: [user.id],
+        set: { email },
+      });
   } catch (error) {
-    throw new ChatSDKError('bad_request:database', 'Failed to create user');
+    throw new ChatSDKError('bad_request:database', 'Failed to insert user');
   }
 }
 

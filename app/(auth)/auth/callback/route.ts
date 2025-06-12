@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { exchangeCodeForSession } from '@/lib/supabase/server';
+import { insertUserAction } from '@/lib/actions/user';
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -9,10 +10,15 @@ export async function GET(request: Request) {
   const next = searchParams.get('next') ?? '/';
 
   if (code) {
-    const supabase = await createClient();
-
     // Exchange the auth code for a session
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await exchangeCodeForSession(code);
+
+    // Insert user into db
+    if (data?.user?.id && data?.user?.email) {
+      await insertUserAction(data.user.id, data.user.email);
+    } else {
+      throw new Error('Failed to get user data');
+    }
 
     if (!error) {
       // Redirect to the intended path or fallback to homepage
