@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 
 import type { AuthError, Session, User } from '@supabase/supabase-js';
-import { createClient } from '@/lib/supabase/client';
+import { getSession } from '@/services/auth';
 
 export default function useUser() {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AuthError | null>(null);
-  const supabase = createClient();
 
   useEffect(() => {
     async function fetchUser() {
@@ -16,7 +15,7 @@ export default function useUser() {
         const {
           data: { session },
           error,
-        } = await supabase.auth.getSession();
+        } = await getSession();
         if (error) throw error;
 
         if (session) {
@@ -30,7 +29,7 @@ export default function useUser() {
       }
     }
     fetchUser();
-  }, [supabase]);
+  }, []);
 
   return { loading, error, session, user };
 }

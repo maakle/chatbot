@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import type { User } from '@supabase/supabase-js';
+import type { EmailOtpType, User } from '@supabase/supabase-js';
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -47,6 +47,16 @@ export async function getUserOnServer(): Promise<User | null> {
 export async function exchangeCodeForSession(code: string) {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
+  return { data, error };
+}
+
+export async function verifyOtp(type: EmailOtpType, token_hash: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.verifyOtp({
+    type,
+    token_hash,
+  });
 
   return { data, error };
 }

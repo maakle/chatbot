@@ -1,6 +1,6 @@
+import { signInWithOAuth } from '@/services/auth';
 import { Button } from './ui/button';
 import Image from 'next/image';
-import { signInWithOauth } from '@/services/user';
 
 export function SocialLogins({
   type,
@@ -11,7 +11,7 @@ export function SocialLogins({
 }) {
   const handleSignInWithGoogle = async () => {
     try {
-      await signInWithOauth('google');
+      await signInWithOAuth('google');
     } catch (error) {
       console.error('Error signing in with Google:', error);
     }

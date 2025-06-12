@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server';
+import { insertUserAction } from '@/lib/actions/user';
+import { verifyOtp } from '@/lib/supabase/server';
 import type { EmailOtpType } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import type { NextRequest } from 'next/server';
@@ -10,12 +11,12 @@ export async function GET(request: NextRequest) {
   const next = searchParams.get('next') ?? '/';
 
   if (token_hash && type) {
-    const supabase = await createClient();
+    const { data, error } = await verifyOtp(type, token_hash);
 
-    const { error } = await supabase.auth.verifyOtp({
-      type,
-      token_hash,
-    });
+    if (data?.user?.id && data?.user?.email) {
+      await insertUserAction(data.user.id, data.user.email);
+    }
+
     if (!error) {
       // redirect user to specified redirect URL or root of app
       redirect(next);

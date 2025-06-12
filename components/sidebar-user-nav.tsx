@@ -18,16 +18,15 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
+import { signOut } from '@/services/auth';
 
 export function SidebarUserNav({ user }: { user: User | null }) {
   const router = useRouter();
-  const supabase = createClient();
   const { setTheme, resolvedTheme } = useTheme();
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    await signOut();
     router.push('/auth/login');
   };
 
