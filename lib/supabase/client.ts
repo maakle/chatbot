@@ -30,6 +30,8 @@ export async function createSupabaseUserViaEmailAndPassword(
   email: string,
   password: string,
 ) {
+  const supabase = createClient();
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
